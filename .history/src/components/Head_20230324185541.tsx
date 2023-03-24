@@ -14,6 +14,7 @@ const Head = () => {
 	const [searchSuggetions, setSearchSuggetions] = useState([]);
 	const [showSuggetions, setShowSuggetions] = useState(false);
 	const getSearchSuggetions = async () => {
+		console.log('API call ');
 		const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
 		const json = await data.json();
 		setSearchSuggetions(json[1]);
@@ -48,7 +49,7 @@ const Head = () => {
 				<button className=' border border-gray-400 p-2 rounded-r-full bg-gray-100'>
 					Search
 				</button>
-				{searchSuggetions && searchSuggetions.length > 0 && showSuggetions ? (
+				{searchSuggetions && searchSuggetions.length > 0 ? (
 					<div className='absolute bg-white w-1/3 p-2'>
 						<ul>
 							{searchSuggetions.map((result, index) => (

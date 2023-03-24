@@ -14,6 +14,7 @@ const Head = () => {
 	const [searchSuggetions, setSearchSuggetions] = useState([]);
 	const [showSuggetions, setShowSuggetions] = useState(false);
 	const getSearchSuggetions = async () => {
+		console.log('API call ');
 		const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
 		const json = await data.json();
 		setSearchSuggetions(json[1]);

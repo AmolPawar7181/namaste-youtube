@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import useDebounce from '../hooks/useDebounce';
 import {toggleMenu} from '../utils/appSlice';
-import {YOUTUBE_SEARCH_API} from '../utils/Constants';
 
 const Head = () => {
 	const dispatch = useDispatch();
@@ -11,12 +10,12 @@ const Head = () => {
 	};
 
 	const [searchQuery, setSearchQuery] = useState('');
-	const [searchSuggetions, setSearchSuggetions] = useState([]);
-	const [showSuggetions, setShowSuggetions] = useState(false);
+	// useEffect(() => {
+	// 	useDebounce(200, getSearchSuggetions)
+	// }, [searchQuery]);
+
 	const getSearchSuggetions = async () => {
-		const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
-		const json = await data.json();
-		setSearchSuggetions(json[1]);
+		console.log('API call ');
 	};
 
 	useDebounce(searchQuery, 200, getSearchSuggetions);
@@ -42,21 +41,10 @@ const Head = () => {
 					type='text'
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
-					onFocus={() => setShowSuggetions(true)}
-					onBlur={() => setShowSuggetions(false)}
 				/>
 				<button className=' border border-gray-400 p-2 rounded-r-full bg-gray-100'>
 					Search
 				</button>
-				{searchSuggetions && searchSuggetions.length > 0 && showSuggetions ? (
-					<div className='absolute bg-white w-1/3 p-2'>
-						<ul>
-							{searchSuggetions.map((result, index) => (
-								<li key={index}> {result}</li>
-							))}
-						</ul>
-					</div>
-				) : null}
 			</div>
 			<div className='col-span-1'>
 				<img
