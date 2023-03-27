@@ -5,7 +5,7 @@ import useDebounce from '../hooks/useDebounce';
 import {toggleMenu} from '../utils/appSlice';
 import {YOUTUBE_SEARCH_API} from '../utils/Constants';
 import {cacheResults} from '../utils/searchSlice';
-import {RootState} from '../utils/types';
+import {CacheOptions, CacheState, RootState} from '../utils/types';
 
 const Head = () => {
 	const dispatch = useDispatch();
@@ -19,19 +19,18 @@ const Head = () => {
 	const [searchSuggetions, setSearchSuggetions] = useState([]);
 	const [showSuggetions, setShowSuggetions] = useState(false);
 	const getSearchSuggetions = async () => {
-		// if there is any value in searchQuery
-		if (searchQuery) {
-			// return results from cahce if we have results in cache
-			if (searchCache[searchQuery]) {
-				setSearchSuggetions(searchCache[searchQuery]);
-				return;
-			}
-			// else make an API call
-			const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
-			const json = await data.json();
-			setSearchSuggetions(json[1]);
-			dispatch(cacheResults({[searchQuery]: json[1]}));
+		if (searchCache.cache) {
+			console.log('if searchCache ', searchCache.cache[searchQuery]);
+			//dispatch(cacheResults)
+		} else {
+			console.log('else searchCache ', searchCache.cache);
 		}
+		// if(searchCache[searchQuery]){
+
+		// }
+		// const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+		// const json = await data.json();
+		// setSearchSuggetions(json[1]);
 	};
 
 	useDebounce(searchQuery, 200, getSearchSuggetions);

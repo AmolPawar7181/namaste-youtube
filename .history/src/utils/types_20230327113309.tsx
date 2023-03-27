@@ -1,17 +1,13 @@
 export interface MenuState {
 	isMenuOpen: boolean;
 }
-
-export type DynamicObject = {
-	[key: string]: any;
-};
-// export interface CacheState {
-// 	cache: CacheOptions;
-// }
+export interface CacheState {
+	cache: {};
+}
 
 export interface RootState {
 	app: MenuState;
-	search: DynamicObject;
+	search: CacheState;
 }
 
 export interface ToggleMenuAction {
