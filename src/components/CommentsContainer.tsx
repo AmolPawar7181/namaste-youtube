@@ -1,61 +1,33 @@
+import {useEffect, useState} from 'react';
+import {YOUTUBE_COMMENTS_API} from '../utils/Constants';
 import CommentList from './CommentList';
+import Shimmer from './Shimmer';
 
-const commentsData = [
-	{
-		name: 'Amol Pawar',
-		text: 'Lorem ipsum',
-		replies: [],
-	},
-	{
-		name: 'Amol Pawar 1',
-		text: 'Lorem ipsum 1',
-		replies: [
-			{
-				name: 'Amol Pawar',
-				text: 'Lorem ipsum 1-1',
-				replies: [],
-			},
-		],
-	},
-	{
-		name: 'Amol Pawar 2',
-		text: 'Lorem ipsum 2',
-		replies: [],
-	},
-	{
-		name: 'Amol Pawar 3',
-		text: 'Lorem ipsum 3',
-		replies: [],
-	},
-	{
-		name: 'Amol Pawar 4',
-		text: 'Lorem ipsum 4',
-		replies: [
-			{
-				name: 'Amol Pawar 4-1',
-				text: 'Lorem ipsum 4-1',
-				replies: [
-					{
-						name: 'Amol Pawar 4-1-1',
-						text: 'Lorem ipsum 4-1-1',
-						replies: [],
-					},
-					{
-						name: 'Amol Pawar 4-1-2',
-						text: 'Lorem ipsum 4-1-2',
-						replies: [],
-					},
-				],
-			},
-		],
-	},
-];
+const youtubeApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-const CommentsContainer = () => {
+const CommentsContainer = ({videoId}: {videoId: any}) => {
+	const [commentsData, setCommentsData] = useState([]);
+
+	useEffect(() => {
+		getComments();
+	}, []);
+
+	const getComments = async () => {
+		const data = await fetch(
+			`${YOUTUBE_COMMENTS_API}&key=${youtubeApiKey}&videoId=${videoId}`
+		);
+		const json = await data.json();
+		setCommentsData(json.items);
+	};
+
 	return (
 		<div className='m-5 p-2'>
 			<h1 className='text-2xl font-bold'>Comments</h1>
-			<CommentList comments={commentsData} />
+			{commentsData && commentsData.length > 0 ? (
+				<CommentList comments={commentsData} />
+			) : (
+				<Shimmer />
+			)}
 		</div>
 	);
 };
